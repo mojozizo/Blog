@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UserCreate(c *gin.Context) {
+func UserFetchAll(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Inside Create",
+		"message": "Inisde Fetch all ",
 	})
 }
