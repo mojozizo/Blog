@@ -1,6 +1,8 @@
 package user
 
 import (
+	"blog/connections"
+	"blog/models"
 	"fmt"
 	"net/http"
 
@@ -8,16 +10,20 @@ import (
 )
 
 func UserDelete(c *gin.Context) {
-
+	var req models.User
 	user_id := c.Param("id")
 
-	if user_id == "123" {
-		fmt.Println("Delete the id:", user_id)
-
+	res := connections.DB.Where("id = ?", user_id).Delete(&req)
+	if res.Error != nil {
+		fmt.Println("Error in deleting a user row", res.Error)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Internal server error",
+		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Inside Delete",
+		"User Deleted": user_id,
 	})
 
 }

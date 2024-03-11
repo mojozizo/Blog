@@ -1,6 +1,7 @@
 package user
 
 import (
+	"blog/connections"
 	"blog/models"
 	"fmt"
 	"net/http"
@@ -11,15 +12,6 @@ import (
 
 func UserCreate(c *gin.Context) {
 
-	// if err := c.Request.ParseForm(); err != nil {
-	// 	fmt.Printf("Form Error, err: %v", err)
-	// 	return
-	// }
-
-	// fmt.Println("Post Request success")
-	// name := c.PostForm("name")
-	// email := c.PostForm("email")
-
 	var req models.User
 	if err := c.BindJSON(&req); err != nil {
 		fmt.Println("Handle error")
@@ -28,10 +20,22 @@ func UserCreate(c *gin.Context) {
 
 	req.ID = uuid.NewString()
 
-	fmt.Println("Name: ", req.FirstName)
-	fmt.Println("Email: ", req.Email)
+	// fmt.Println("ID: ", req.ID)
+	// fmt.Println("Name: ", req.FirstName)
+	// fmt.Println("Email: ", req.Email)
+
+	res := connections.DB.Create(&req)
+	if res.Error != nil {
+		fmt.Println("Error in creating a user row", res.Error)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Internal server error",
+		})
+		return
+	}
+
+	fmt.Println("Rows Affected: ", res.RowsAffected)
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Inside Create",
+		"User created": req.ID,
 	})
 }
