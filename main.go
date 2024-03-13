@@ -3,7 +3,7 @@ package main
 import (
 	"blog/connections"
 	"blog/models"
-	"blog/user"
+	"blog/routes"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -21,14 +21,8 @@ func main() {
 
 	connections.DB.AutoMigrate(&models.User{})
 
-	// a.Static("/static", "./templates")
-	a := r.Group("/user")
-
-	a.POST("/create", user.UserCreate)
-	a.PUT("/update/:id", user.UserUpdate)
-	a.DELETE("/delete/:id", user.UserDelete)
-	a.GET("/fetch/:id", user.UserFetch)
-	a.GET("/fetchall", user.UserFetchAll)
+	routes.AddUserRoutes(r)
+	routes.AddBlogRoutes(r)
 
 	r.Run()
 }

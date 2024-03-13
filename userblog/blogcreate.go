@@ -1,4 +1,4 @@
-package user
+package blog
 
 import (
 	"blog/connections"
@@ -10,9 +10,9 @@ import (
 	"github.com/google/uuid"
 )
 
-func UserCreate(c *gin.Context) {
+func BlogCreate(c *gin.Context) {
 
-	var req models.User
+	var req models.Blog
 	if err := c.BindJSON(&req); err != nil {
 		fmt.Println("Handle error")
 		return

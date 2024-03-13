@@ -1,4 +1,4 @@
-package user
+package blog
 
 import (
 	"blog/connections"
@@ -7,31 +7,26 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
-func UserCreate(c *gin.Context) {
-
-	var req models.User
+func BlogUpdate(c *gin.Context) {
+	var req models.Blog
 	if err := c.BindJSON(&req); err != nil {
 		fmt.Println("Handle error")
 		return
 	}
+	user_id := c.Param("id")
 
-	req.ID = uuid.NewString()
-
-	res := connections.DB.Create(&req)
+	res := connections.DB.Model(&models.User{}).Where("id = ?", user_id).Updates(&req)
 	if res.Error != nil {
-		fmt.Println("Error in creating a user row", res.Error)
+		fmt.Println("Error in updating a user row", res.Error)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Internal server error",
 		})
 		return
 	}
 
-	fmt.Println("Rows Affected: ", res.RowsAffected)
-
 	c.JSON(http.StatusOK, gin.H{
-		"User created": req.ID,
+		"User updated": user_id,
 	})
 }
