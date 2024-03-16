@@ -25,6 +25,8 @@ func SQLDbManager() error {
 	return nil
 }
 
+var PgDB *gorm.DB
+
 func PostgreSQLDbManager() error {
 	dsn := os.Getenv("POSTGRE_DB_URL")
 	if dsn == "" {
@@ -32,7 +34,7 @@ func PostgreSQLDbManager() error {
 	}
 
 	var err error
-	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	PgDB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return fmt.Errorf("failed to connect to database: %v", err)
 	}

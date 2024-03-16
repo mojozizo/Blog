@@ -21,7 +21,7 @@ func main() {
 	r := gin.Default()
 
 	connections.DB.AutoMigrate(&models.User{})
-	// connections.DB.AutoMigrate(&models.Blog{})
+	connections.PgDB.AutoMigrate(&models.Blog{})
 
 	routes.AddUserRoutes(r)
 	routes.AddBlogRoutes(r)
