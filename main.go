@@ -11,7 +11,8 @@ import (
 
 func init() {
 	connections.LoadEnv()
-	connections.DbManager()
+	connections.SQLDbManager()
+	connections.PostgreSQLDbManager()
 }
 
 func main() {
@@ -20,6 +21,7 @@ func main() {
 	r := gin.Default()
 
 	connections.DB.AutoMigrate(&models.User{})
+	// connections.DB.AutoMigrate(&models.Blog{})
 
 	routes.AddUserRoutes(r)
 	routes.AddBlogRoutes(r)
